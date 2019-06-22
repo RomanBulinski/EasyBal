@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    
+
 
     public static String balance(String book) {
 
@@ -15,10 +15,8 @@ public class Main {
 
         String[] lines = book.replaceAll("[^a-zA-Z0-9\n. ]", "").split("\n+");
 
-        double totalStart = Double.valueOf(lines[0]);
-        double balance = totalStart;
-        String totalStartS = String.format("%.2f", totalStart);
-        result.append(totalStartS).append("\\r\\n");
+        double balance = Double.valueOf(lines[0]);
+        result.append(getFormatedNumber(balance)).append("\\r\\n");
 
         for(int i = 1; i<lines.length; i++){
             String[] items = lines[i].split(" ");
@@ -33,7 +31,7 @@ public class Main {
             balance = balance - Double.valueOf(price);
             balance =  Math.round(balance*100)/100D;
 
-            itemsList.add( String.format("%.2f", balance) );
+            itemsList.add(getFormatedNumber(balance));
             String temp = "";
             for(int j =0; j<itemsList.size(); j++){
                 temp = temp + itemsList.get(j)+" ";
@@ -41,19 +39,20 @@ public class Main {
             temp = temp.substring(0,temp.length()-1)+"\\r\\n";
             result.append(temp);
         }
-
         averageExpense = totalExpense/counter;
-        String totalString = String.format("%.2f", (Math.round(totalExpense * 100.0) / 100.0));
-        String averageString = String.format("%.2f", (Math.round(averageExpense * 100.0) / 100.0));
 
         return  result.append("Total expense  ")
-                .append(totalString).append("\\r\\n")
-                .append("Average expense  ")
-                .append(averageString)
-                .toString();
-
+                .append(getRoundedString(totalExpense)).append("\\r\\n").append("Average expense  ")
+                .append(getRoundedString(averageExpense)).toString();
     }
 
+    private static String getFormatedNumber(double number) {
+        return String.format("%.2f", number);
+    }
+
+    private static String getRoundedString(double number) {
+        return getFormatedNumber(Math.round(number * 100.0) / 100.0);
+    }
 
 
 }
