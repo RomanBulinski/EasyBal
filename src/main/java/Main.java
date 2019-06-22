@@ -9,29 +9,26 @@ public class Main {
 
     public static String balance(String book) {
 
+        String result = "Original Balance: ";
         double totalExpense = 0;
         double averageExpense;
         int counter =0;
         String startBook = book;
-        String[] signs = {"!","=","+",":","_"};
+        startBook = startBook.replaceAll("\\?","");
+        startBook = startBook.replaceAll("\\{}","");
+
+        String[] signs = {"!","=","+",":","_",",",";"};
+
         for( String s :signs   ){
             if( startBook.contains(s) ){
-                startBook = startBook.replaceAll(s," ");
+                startBook = startBook.replaceAll(s,"");
             }
         }
-        if( startBook.contains("  ") ){
-            startBook = startBook.replaceAll("  "," ");
-        }
-        if( startBook.contains("  ") ){
-            startBook = startBook.replaceAll("  "," ");
-        }
-        String result = "Original Balance: ";
         String[] lines = startBook.split("\n");
-        double total = Double.valueOf(lines[0]);
-//        double roundTotal = (Math.round(total * 100.0) / 100.0);
-        double balance = total;
-        String roundTotal = String.format("%.2f", total);
-        result = result + roundTotal+"\\r\\n";
+        double totalStart = Double.valueOf(lines[0]);
+        double balance = totalStart;
+        String totalStartS = String.format("%.2f", totalStart);
+        result = result + totalStartS+"\\r\\n";
 
         for(int i = 1; i<lines.length; i++){
             String[] items = lines[i].split(" ");
@@ -44,7 +41,9 @@ public class Main {
             counter++;
             itemsList.add("Balance");
             balance = balance - Double.valueOf(price);
-            itemsList.add( String.valueOf(   (Math.round((balance * 100.0) / 100.0)     )) );
+            balance =  Math.round(balance*100)/100D;
+
+            itemsList.add( String.format("%.2f", balance) );
             String temp = "";
             for(int j =0; j<itemsList.size(); j++){
                 temp = temp + itemsList.get(j)+" ";
@@ -52,16 +51,21 @@ public class Main {
             temp = temp.substring(0,temp.length()-1)+"\\r\\n";
             result = result + temp;
         }
+
         averageExpense = totalExpense/counter;
-        result = result + "Total expense  "+(Math.round(totalExpense * 100.0) / 100.0)+"\\r\\n";
+        String totalString = String.format("%.2f", (Math.round(totalExpense * 100.0) / 100.0));
+        result = result + "Total expense  "+     totalString    +"\\r\\n";
         result = result + "Average expense  "+(Math.round(averageExpense * 100.0) / 100.0);
         return  result;
     }
 
     public static void main(String[] args) {
-        System.out.println(data);
-        System.out.println("-------------------------------------------");
-        System.out.println(balance(data));
+
+        String b2 = "1233.00\n125 Hardware;! 24.80?\n123 Flowers 93.50;\n127 Meat 120.90\n120 Picture 34.00\n124 Gasoline 11.00\n" +
+                "123 Photos;! 71.40?\n122 Picture 93.50\n132 Tyres;! 19.00,?;\n129 Stamps; 13.60\n129 Fruits{} 17.60\n129 Market;! 128.00?\n121 Gasoline;! 13.60?";
+
+
+
     }
 
 
